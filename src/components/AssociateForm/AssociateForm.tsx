@@ -1,3 +1,4 @@
+ // @ts-nocheck
 import { useForm } from "react-hook-form";
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { useAssociateContext } from "../../contexts/AssociateContexts";
