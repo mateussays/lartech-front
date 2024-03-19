@@ -1,4 +1,3 @@
-import Header from "./components/Header/Header";
 import { AssociateProvider } from "./contexts/AssociateContexts";
 import AssociatesList from "./pages/AssociateList/AssociateList";
 import Home from "./pages/Home/Home";

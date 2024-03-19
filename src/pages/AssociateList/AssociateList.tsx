@@ -1,5 +1,5 @@
  // @ts-nocheck
-import { Button, Card, Container, Row } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 import Associate from "../../components/Associate/Associate";
 import { useAssociateContext } from "../../contexts/AssociateContexts";
 import Header from "../../components/Header/Header";
