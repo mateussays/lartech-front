@@ -1,6 +1,8 @@
+ // @ts-nocheck
 import React, { createContext, useContext, useEffect, useState } from "react";
 import ToastMessage from "../components/ToastMessage/ToastMessage";
 import { deleteAssociateById, getAssociates, includeAssociate, updateAssociate } from "../services/lartechapi";
+import { transformAssociate } from "../helpers/helpers";
 
 type Phones = {
   phoneNumber: string;
@@ -54,10 +56,8 @@ export const AssociateProvider = ({ children }: AssociateProviderProps) => {
         }, 3000);
         return;
       }
-
       setAssociates(response);
     };
-
     listAssociates();
   }, []);
 
@@ -72,8 +72,8 @@ export const AssociateProvider = ({ children }: AssociateProviderProps) => {
       }, 3000);
       return;
     }
-
-    setAssociates([...associates, associate]);
+    const transform = transformAssociate(associate);
+    setAssociates([...associates, transform]);
     setToastMessage("Usuário adicionado com sucesso");
     setShowToast(true);
     setTimeout(() => {

@@ -1,18 +1,19 @@
  // @ts-nocheck
 import { Button, Card, Container } from "react-bootstrap";
 import Associate from "../../components/Associate/Associate";
-import { useAssociateContext } from "../../contexts/AssociateContexts";
 import Header from "../../components/Header/Header";
 import { Link } from "react-router-dom";
+import { useAssociateContext } from "../../contexts/AssociateContexts";
 
 function AssociatesList() {
   const { associates } = useAssociateContext();
+
   return (
     <Container>
       <Card>
         <Header />
         <Card.Body>
-          {associates.length === 0 ? (
+          {!associates || associates.length === 0 ? (
             <div className="text-center my-5">
               <p>Não há nenhum associado cadastrado</p>
             </div>

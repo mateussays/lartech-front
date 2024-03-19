@@ -35,6 +35,7 @@ function AssociateForm() {
     PhoneNumberType: "",
     isActive: false,
   });
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const getAssociate = async () => {
@@ -75,7 +76,7 @@ function AssociateForm() {
     setAssociates({ ...associate, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (data: Associate) => {
+  const onSubmit = async (data: Associate) => {
     const createId = () => Math.random().toString(36).substr(2, 9);
 
     const newAssociate = {
@@ -88,7 +89,7 @@ function AssociateForm() {
       isActive: data.isActive,
     };
 
-    addAssociate(newAssociate);
+    await addAssociate(newAssociate);
 
     clearForm();
   };
