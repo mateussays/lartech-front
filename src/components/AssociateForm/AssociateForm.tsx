@@ -35,7 +35,6 @@ function AssociateForm() {
     PhoneNumberType: "",
     isActive: false,
   });
-  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const getAssociate = async () => {
