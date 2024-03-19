@@ -104,7 +104,6 @@ export const AssociateProvider = ({ children }: AssociateProviderProps) => {
   };
 
   const editAssociate = async (id: string, updatedAssociate: Associate) => {
-    console.log(updatedAssociate);
     const response = await updateAssociate(id, updatedAssociate);
 
     if (response.error) {
