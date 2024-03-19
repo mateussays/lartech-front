@@ -17,17 +17,19 @@ function AssociatesList() {
             </div>
           ) : (
             <>
-              {associates.map((associate) => (
-                <Associate
-                  key={associate.id}
-                  name={associate.name}
-                  cpf={associate.cpf}
-                  birthDate={associate.birthDate}
-                  phoneNumber={associate.phoneNumber}
-                  active={associate.active}
-                  id={associate.id}
-                />
-              ))}
+              {associates.map((associate) =>
+                associate.phones.map((phone) => (
+                  <Associate
+                    key={associate.id}
+                    name={associate.name}
+                    cpf={associate.cpf}
+                    birthDate={associate.birthDate}
+                    phoneNumber={phone.phoneNumber}
+                    active={associate.isActive}
+                    id={associate.id}
+                  />
+                ))
+              )}
             </>
           )}
           <div className="text-end">

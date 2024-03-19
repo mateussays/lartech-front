@@ -3,28 +3,19 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { useAssociateContext } from "../../contexts/AssociateContexts";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getAssociateById } from "../../services/lartechapi";
 
 type Associate = {
   name: string;
   cpf: string;
   birthDate: string;
   phoneNumber: string;
-  active: boolean;
+  isActive: boolean;
   id: string;
-  phoneType: string;
-}
-
-type OnSubmitProps = {
-  name: string;
-  cpf: string;
-  birthDate: string;
-  phoneNumber: string;
-  active: boolean;
-  phoneType: string;
+  PhoneNumberType: string;
 };
 
 type Event = React.ChangeEvent<HTMLInputElement>;
-
 
 function AssociateForm() {
   const {
@@ -32,7 +23,7 @@ function AssociateForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { addAssociate, associates, editAssociate } = useAssociateContext();
+  const { addAssociate, editAssociate } = useAssociateContext();
   const route = useParams();
   const [associate, setAssociates] = useState({
     id: "",
@@ -40,27 +31,32 @@ function AssociateForm() {
     cpf: "",
     birthDate: "",
     phoneNumber: "",
-    phoneType: "",
-    active: false,
+    PhoneNumberType: "",
+    isActive: false,
   });
 
   useEffect(() => {
-    const searchAssociate: Associate  = associates.find(
-      (associate) => associate.id === route.id
-    );
+    const getAssociate = async () => {
+      const response = await getAssociateById(route.id);
+
+      const getPhoneNumber = response.phones[0].phoneNumber;
+      const PhoneNumberType = response.phones[0].phoneNumberType;
+
+      setAssociates({
+        id: response.id,
+        name: response.name,
+        cpf: response.cpf,
+        birthDate: response.birthDate,
+        phoneNumber: getPhoneNumber,
+        PhoneNumberType: PhoneNumberType,
+        isActive: response.isActive,
+      });
+    };
 
     if (route.id) {
-      setAssociates({
-        id: searchAssociate?.id,
-        name: searchAssociate.name,
-        cpf: searchAssociate.cpf,
-        birthDate: searchAssociate.birthDate,
-        phoneNumber: searchAssociate.phoneNumber,
-        phoneType: searchAssociate.phoneType,
-        active: searchAssociate.active,
-      });
+      getAssociate();
     }
-  }, [route.id, associates]);
+  }, [route.id]);
 
   const clearForm = () => {
     setAssociates({
@@ -69,8 +65,8 @@ function AssociateForm() {
       cpf: "",
       birthDate: "",
       phoneNumber: "",
-      phoneType: "",
-      active: false,
+      PhoneNumberType: "",
+      isActive: false,
     });
   };
 
@@ -78,7 +74,7 @@ function AssociateForm() {
     setAssociates({ ...associate, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (data: OnSubmitProps) => {
+  const onSubmit = (data: Associate) => {
     const createId = () => Math.random().toString(36).substr(2, 9);
 
     const newAssociate = {
@@ -87,8 +83,8 @@ function AssociateForm() {
       cpf: data.cpf,
       birthDate: data.birthDate,
       phoneNumber: data.phoneNumber,
-      phoneType: data.phoneType,
-      active: data.active,
+      PhoneNumberType: data.PhoneNumberType,
+      isActive: data.isActive,
     };
 
     addAssociate(newAssociate);
@@ -125,7 +121,7 @@ function AssociateForm() {
               <Form.Control
                 value={associate.cpf}
                 type="text"
-                placeholder="Digite seu CPF"
+                placeholder="XXX.XXX.XXX-XX"
                 {...register("cpf", {
                   required: true,
                   pattern: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
@@ -171,12 +167,12 @@ function AssociateForm() {
             </Form.Group>
           </Col>
           <Col xs={12} md={6}>
-            <Form.Group controlId="PhoneType">
+            <Form.Group controlId="PhoneNumberType">
               <Form.Label>Tipo de telefone</Form.Label>
               <Form.Select
                 aria-label="Selecione o tipo de telefone"
-                {...register("phoneType")}
-                value={associate.phoneType}
+                {...register("PhoneNumberType")}
+                value={associate.PhoneNumberType}
                 onChange={handleInputChange}
               >
                 <option value="1">Celular</option>
@@ -192,8 +188,8 @@ function AssociateForm() {
             type="switch"
             id="custom-switch"
             label="Associado ativo"
-            {...register("active")}
-            checked={associate.active}
+            {...register("isActive")}
+            checked={associate.isActive}
             onChange={handleInputChange}
           />
         </Form.Group>

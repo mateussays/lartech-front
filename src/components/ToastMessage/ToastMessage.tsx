@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Toast } from 'react-bootstrap';
+import { useEffect } from "react";
+import { Toast } from "react-bootstrap";
 
 type ToastMessageProps = {
   message: string;
@@ -17,14 +17,14 @@ const ToastMessage = ({ message, onClose }: ToastMessageProps) => {
 
   return (
     <Toast
-      style={{ position: 'fixed', bottom: 20, right: 20 }}
+      style={{ position: "fixed", bottom: 20, right: 20 }}
       onClose={onClose}
       show
       delay={3000}
       autohide
-      className="bg-success text-white"
+      className={message.includes("Erro") ? "bg-danger" : "bg-success"}
     >
-      <Toast.Body>{message}</Toast.Body>
+      <Toast.Body className="text-light">{message}</Toast.Body>
     </Toast>
   );
 };
